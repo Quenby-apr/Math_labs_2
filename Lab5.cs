@@ -11,6 +11,47 @@ namespace lab_5
     public class Lab5
     {
         private int numberRound;
+        string[] points;
+        private string[] Svenn(double x0, double step) 
+        {
+            double _x0 = x0;
+            double _step = step;
+            int k = 0;
+            double[] x = new double[3];
+            double[] y = new double[3];
+            while (true)
+            {
+                x[0] = _x0 - _step;
+                x[1] = _x0;
+                x[2] = _x0 + _step;
+                for (int i = 0; i < y.Length; i++)
+                {
+                    y[i] = x[i] * x[i] + 2 * Math.Exp(-0.65 * x[i]);
+                }
+                if (y[0] >= y[1] && y[1] <= y[2])
+                {
+                    Console.WriteLine(x[0]);
+                    Console.WriteLine(x[2]);
+                    return new string[2] {x[0].ToString(),x[2].ToString() }; 
+                }
+                if (y[0] <= y[1] && y[1] >= y[2])
+                {
+                    return new string[2] { x[0].ToString(), x[2].ToString() };
+                }
+                if (y[0] >= y[1] && y[1] >= y[2])
+                {
+                    _x0 = _x0 + _step;
+                    _step = 2 * _step;
+                    _x0 = _x0 + _step;
+                }
+                if (y[0] <= y[1] && y[1] <= y[2])
+                {
+                    _x0 = _x0 - _step;
+                    _step = 2 * _step;
+                    _x0 = _x0 - _step;
+                }
+            }
+        }
         private double[] UniformIteration(double a, double b, int N)
         {
             double[] x = new double[N + 1];
@@ -123,6 +164,11 @@ namespace lab_5
 
         public void ChooseMethod()
         {
+            Console.WriteLine("Введите х0: ");
+            double x0 = Double.Parse(Console.ReadLine());
+            Console.WriteLine("Введите величину шага: ");
+            double step = Double.Parse(Console.ReadLine());
+            points = Svenn(x0, step);
             while (true)
             {
                 Console.WriteLine();
@@ -147,15 +193,11 @@ namespace lab_5
         }
         private List<string> UniformParams()
         {
-            Console.WriteLine("Введите начало интервала");
-            string startPont = Console.ReadLine();
-            Console.WriteLine("Введите конец интервала");
-            string endPoint = Console.ReadLine();
-            Console.WriteLine("Введите количество вычислений функции");
+            Console.WriteLine("Введите количество шагов: ");
             string count = Console.ReadLine();
             Console.WriteLine("Введите допустимую погрешность");
             string errorRate = Console.ReadLine();
-            return new List<string> { startPont, endPoint, count, errorRate };
+            return new List<string> { points[0], points[1], count, errorRate };
         }
 
         private List<string> NewtonParams()
@@ -169,13 +211,9 @@ namespace lab_5
 
         private List<string> GoldenParams()
         {
-            Console.WriteLine("Введите начало интервала");
-            string startPont = Console.ReadLine();
-            Console.WriteLine("Введите конец интервала");
-            string endPoint = Console.ReadLine();
             Console.WriteLine("Введите допустимую погрешность");
             string errorRate = Console.ReadLine();
-            return new List<string> { startPont, endPoint, errorRate };
+            return new List<string> { points[0], points[1], errorRate };
         }
 
         private void FindNumbers(double accuracy)  //метод поиска количества знаков для округления
