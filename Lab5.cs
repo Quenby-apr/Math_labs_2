@@ -16,7 +16,6 @@ namespace lab_5
         {
             double _x0 = x0;
             double _step = step;
-            int k = 0;
             double[] x = new double[3];
             double[] y = new double[3];
             while (true)
@@ -36,6 +35,8 @@ namespace lab_5
                 }
                 if (y[0] <= y[1] && y[1] >= y[2])
                 {
+                    Console.WriteLine(x[0]);
+                    Console.WriteLine(x[2]);
                     return new string[2] { x[0].ToString(), x[2].ToString() };
                 }
                 if (y[0] >= y[1] && y[1] >= y[2])
